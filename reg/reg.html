@@ -5,216 +5,668 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>24-Hour Hackathon Registration</title>
 
+  <!-- Optional Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
+    :root {
+      --bg-dark: #020617;
+      --bg-card: rgba(15, 23, 42, 0.85);
+      --accent: #38bdf8;
+      --accent-strong: #0ea5e9;
+      --accent-soft: rgba(56, 189, 248, 0.12);
+      --border-subtle: rgba(148, 163, 184, 0.35);
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --danger: #f97373;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      background: #eef2ff;
-      font-family: "Poppins", sans-serif;
       margin: 0;
       padding: 0;
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at 0% 0%, #1d4ed8 0, transparent 50%),
+        radial-gradient(circle at 100% 100%, #22c55e 0, transparent 55%),
+        radial-gradient(circle at 100% 0%, #a855f7 0, transparent 50%),
+        #020617;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Animated tech grid background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.15) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.2;
+      z-index: -2;
+      animation: grid-move 40s linear infinite;
+    }
+
+    @keyframes grid-move {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-80px, -80px, 0); }
+    }
+
+    /* Glow behind card */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 0, rgba(56, 189, 248, 0.25), transparent 55%);
+      opacity: 0.7;
+      z-index: -1;
+      pointer-events: none;
     }
 
     .container {
-      width: 90%;
-      max-width: 850px;
-      margin: 30px auto;
-      background: #fff;
-      padding: 25px;
-      border-radius: 14px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      width: 100%;
+      max-width: 920px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      padding: 28px 26px 32px;
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow:
+        0 24px 60px rgba(15, 23, 42, 0.9),
+        0 0 60px rgba(56, 189, 248, 0.16);
+      backdrop-filter: blur(20px) saturate(140%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(56, 189, 248, 0.16), transparent 60%),
+        radial-gradient(circle at 90% 100%, rgba(129, 140, 248, 0.12), transparent 60%);
+      opacity: 0.8;
+      z-index: -1;
+    }
+
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.5);
+      background: rgba(15, 23, 42, 0.8);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
     }
 
     h1 {
-      text-align:center;
-      color:#1e3a8a;
+      margin: 0;
+      font-size: 26px;
+      color: #e5e7eb;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-family: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .tagline {
+      font-size: 12px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    form {
+      margin-top: 18px;
     }
 
     h2 {
-      color: #2563eb;
-      border-left: 5px solid #2563eb;
-      padding-left: 10px;
-      margin-top: 30px;
+      color: var(--accent-strong);
+      font-size: 16px;
+      margin: 26px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-family: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    h2::before {
+      content: "";
+      width: 18px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, var(--accent-strong));
     }
 
     label {
       margin-top: 12px;
       display: block;
-      font-weight: 600;
+      font-weight: 500;
+      font-size: 13px;
+      color: #cbd5f5;
     }
 
-    input, select, textarea {
+    label span.hint {
+      font-weight: 400;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-left: 6px;
+    }
+
+    input,
+    select,
+    textarea {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
-      font-size: 15px;
+      padding: 9px 11px;
+      margin-top: 6px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      font-size: 13px;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, transform 0.06s ease;
+      font-family: inherit;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(148, 163, 184, 0.7);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent-strong);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.7), 0 0 24px rgba(56, 189, 248, 0.2);
+      background: rgba(15, 23, 42, 0.95);
+      transform: translateY(-1px);
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
     }
 
     .member-box {
-      background: #f1f5ff;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 15px;
-      border-left: 4px solid #2563eb;
+      background: rgba(15, 23, 42, 0.85);
+      padding: 14px 14px 12px;
+      border-radius: 12px;
+      margin-top: 14px;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      position: relative;
+      overflow: hidden;
     }
 
-    button {
-      width: 100%;
-      padding: 14px;
-      margin-top: 25px;
-      background:#2563eb;
-      color:white;
-      border:none;
-      border-radius: 10px;
-      font-size:18px;
-      cursor:pointer;
-      font-weight: bold;
+    .member-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.16), transparent 50%);
+      opacity: 0.7;
+      pointer-events: none;
     }
 
-    button:hover {
-      background:#1d4ed8;
+    .member-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 6px;
+      font-family: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px 16px;
+    }
+
+    .flex-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    button[type="submit"] {
+  width: 100%;
+  padding: 16px;
+  margin-top: 26px;
+  background: #0f172a;
+  color: #e2e8f0;
+  border: 2px solid #38bdf8;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: 0.25s ease;
+  font-family: "Space Mono", monospace;
+}
+
+/* animated neon border */
+button[type="submit"]::before {
+  content: "";
+  position: absolute;
+  top: -2px; left: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  background: linear-gradient(120deg, #0ea5e9, #38bdf8, #6366f1, #22c55e);
+  background-size: 300% 300%;
+  animation: neonGlow 4s linear infinite;
+  z-index: -1;
+  border-radius: 16px;
+}
+
+@keyframes neonGlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 22px rgba(56, 189, 248, 0.7);
+  border-color: #0ea5e9;
+}
+
+    /* Terms checkboxes */
+    .terms-group label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .terms-group input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      margin-top: 2px;
+      accent-color: var(--accent-strong);
+      cursor: pointer;
+    }
+
+    /* Small footer info */
+    .footer-note {
+      margin-top: 14px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border: 1px solid rgba(56, 189, 248, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--accent);
+    }
+
+    .chip span.pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    /* Responsive */
+    @media (max-width: 720px) {
+      body {
+        padding: 12px;
+      }
+
+      .container {
+        padding: 20px 16px 22px;
+      }
+
+      h1 {
+        font-size: 21px;
+      }
+
+      .header-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="header-bar">
+      <div>
+        <div class="badge">
+          <span class="dot"></span>
+            24-Hour Offline Hackathon
+        </div>
+        <h1>TechFest2K26 Hackathon</h1>
+        <div class="subtitle">Registration Portal · Build, Ship, Repeat.</div>
+      </div>
+      <div class="tagline">
+        REG ID: <span style="color:#a5b4fc;">TF-26-HACK</span>
+      </div>
+    </div>
 
-<div class="container">
+    <form>
+      <!-- Basic Personal Details -->
+      <h2>1. Personal Details</h2>
 
-  <h1>TechFest2K26 24-Hour Hackathon Registration</h1>
+      <label>Full Name</label>
+      <input type="text" required />
 
-  <form>
+      <label>Email ID</label>
+      <input type="email" required />
 
-    <!-- Basic Personal Details -->
-    <h2>1. Personal Details</h2>
+      <label>Mobile Number (WhatsApp)</label>
+      <input type="text" required />
 
-    <label>Full Name</label>
-    <input type="text" required />
+      <!-- Academic Details -->
+      <h2>2. Academic Details</h2>
 
-    <label>Email ID</label>
-    <input type="email" required />
+      <label>College / Institute Name</label>
+      <input type="text" required />
 
-    <label>Mobile Number (WhatsApp)</label>
-    <input type="text" required />
+      <label>Department / Branch</label>
+      <select required>
+        <option value="">Select</option>
+        <option>CSE</option>
+        <option>DS</option>
+        <option>ECE</option>
+        <option>AIML</option>
+        <option>EEE</option>
+      </select>
 
-    <!-- Academic Details -->
-    <h2>2. Academic Details</h2>
+      <label>Year of Study</label>
+      <select>
+        <option>1st Year</option>
+        <option>2nd Year</option>
+        <option>3rd Year</option>
+        <option>4th Year</option>
+        <option>PG</option>
+      </select>
 
-    <label>College / Institute Name</label>
-    <input type="text" required />
+      <!-- Team Registration -->
+      <h2>3. Team Registration</h2>
 
-    <label>Department / Branch</label>
-    <select required>
-      <option value="">Select</option>
-      <option>CSE</option>
-      <option>DS</option>
-      <option>ECE</option>
-      <option>AIML</option>
-      <option>EEE</option>
-    </select>
+      <label>Team Name</label>
+      <input type="text" required />
 
-    <label>Year of Study</label>
-    <select>
-      <option>1st Year</option>
-      <option>2nd Year</option>
-      <option>3rd Year</option>
-      <option>4th Year</option>
-      <option>PG</option>
-    </select>
+      <label>Team Leader GitHub / Portfolio <span class="hint">(optional but recommended)</span></label>
+      <input type="text" placeholder="https://github.com/username" />
 
-    <!-- Team Registration -->
-    <h2>3. Team Registration</h2>
+      <label>Team Size</label>
+      <select id="teamSize">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+      </select>
 
-    <label>Team Name</label>
-    <input type="text" required />
+      <div id="teamMembers"></div>
 
-    <label>Team Leader GitHub / Portfolio</label>
-    <input type="text" placeholder="https://github.com/username" />
+      <!-- Skills -->
+      <h2>4. Skills & Tech Stack</h2>
 
-    <label>Team Size</label>
-    <select id="teamSize" >
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-    </select>
-
-    <div id="teamMembers"></div>
-
-    <!-- Skills -->
-    <h2>4. Skills & Tech Stack</h2>
-
-    <label>Skills (Optional)</label>
-    <textarea placeholder="Example: MERN, Python, ML, Flutter, IoT..."></textarea>
-
-
-  
-
+      <label>Skills <span class="hint">(Optional)</span></label>
+      <textarea placeholder="Example: MERN, Python, ML, Flutter, IoT..."></textarea>
 
       <!-- Logistics -->
-    <h2>5. Accommodation & Logistics</h2>
+      <h2>5. Accommodation & Logistics</h2>
 
-    <label>Need Accommodation?</label>
-    <select>
-      <option>No</option>
-      <option>Yes</option>
-    </select>
+      <label>Need Accommodation?</label>
+      <select>
+        <option>No</option>
+        <option>Yes</option>
+      </select>
 
-    <label>Arrival Date & Time</label>
-    <input type="datetime-local" />
+      <label>Arrival Date & Time</label>
+      <input type="datetime-local" />
 
-    <label>Food Preference</label>
-    <select>
-      <option>Veg</option>
-      <option>Non-Veg</option>
-    </select>
-   
+      <label>Food Preference</label>
+      <select>
+        <option>Veg</option>
+        <option>Non-Veg</option>
+      </select>
 
-     <!-- Optional Analytics -->
-    <h2>6. Additional Info</h2>
+      <!-- Optional Analytics -->
+      <h2>6. Additional Info</h2>
 
-    <label>How did you hear about this TechFest?</label>
-    <select>
-      <option>Instagram</option>
-      <option>Friends</option>
-      <option>Website</option>
-      <option>Posters</option>
-      <option>Faculty</option>
-    </select>
+      <label>How did you hear about this TechFest?</label>
+      <select>
+        <option>Instagram</option>
+        <option>Friends</option>
+        <option>Website</option>
+        <option>Posters</option>
+        <option>Faculty</option>
+      </select>
 
-    <label>Previous participation?</label>
-    <select>
-      <option>No</option>
-      <option>Yes</option>
-    </select>
+      <label>Previous participation?</label>
+      <select>
+        <option>No</option>
+        <option>Yes</option>
+      </select>
 
-    <label>T-shirt Size</label>
-    <select>
-      <option>S</option>
-      <option>M</option>
-      <option>L</option>
-      <option>XL</option>
-      <option>XXL</option>
-    </select>
+      <label>T-shirt Size</label>
+      <select>
+        <option>S</option>
+        <option>M</option>
+        <option>L</option>
+        <option>XL</option>
+        <option>XXL</option>
+      </select>
 
- <!-- Terms -->
-    <h2>7. Terms & Agreement</h2>
+      <!-- Terms -->
+      <h2>7. Terms & Agreement</h2>
 
-    <label><input type="checkbox" required> I agree to follow all Hackathon rules</label>
-    <label><input type="checkbox" required> I understand it’s a 24-hour offline hackathon</label>
-    <label><input type="checkbox" required> I allow my photos/videos to be used for promotions</label>
+      <div class="terms-group">
+        <label><input type="checkbox" required> I agree to follow all Hackathon rules</label>
+        <label><input type="checkbox" required> I understand it’s a 24-hour offline hackathon</label>
+        <label><input type="checkbox" required> I allow my photos/videos to be used for promotions</label>
+      </div>
+
+      <button type="submit">Submit Registration</button>
+
+      <div class="footer-note">
+        <span class="chip"><span class="pill-dot"></span> Powered by TechFest2K26 Core Team</span>
+      </div>
+    </form>
+  </div>
+
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { 
+  getFirestore, collection, addDoc 
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+
+// ------------------ Firebase Config ------------------ 
+const firebaseConfig = {
+  apiKey: "AIzaSyAXMe-TpFvw6X-ry43wdevjGHFrmldyiQA",
+  authDomain: "chatbot-5ce023.firebaseapp.com",
+  projectId: "chatbot-5ce023",
+  storageBucket: "chatbot-5ce023.appspot.com",
+  messagingSenderId: "1015838198134",
+  appId: "1:1015838198134:web:93b33a69c2c44010309257"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Utility – return NA if blank
+function clean(v) {
+  return v && v.trim() !== "" ? v.trim() : "NA";
+}
+
+
+// ------------------ TEAM MEMBER FIELDS (ONE CLEAN VERSION) ------------------
+const teamSizeSelect = document.getElementById("teamSize");
+const teamMembersDiv = document.getElementById("teamMembers");
+
+function renderTeamMembers() {
+  const size = parseInt(teamSizeSelect.value || "1", 10);
+  teamMembersDiv.innerHTML = "";
+
+  for (let i = 2; i <= size; i++) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "member-box";
+
+    wrapper.innerHTML = `
+      <div class="member-title">Member ${i}</div>
+      <div class="grid-2">
+        <div>
+          <label>Full Name</label>
+          <input type="text" class="m-name" placeholder="Member ${i} Name" />
+        </div>
+        <div>
+          <label>Email ID</label>
+          <input type="email" class="m-email" placeholder="member${i}@example.com" />
+        </div>
+        <div>
+          <label>Department</label>
+          <input type="text" class="m-branch" placeholder="CSE / ECE / AIML..." />
+        </div>
+        <div>
+          <label>GitHub / Portfolio</label>
+          <input type="text" class="m-git" placeholder="https://github.com/member${i}" />
+        </div>
+      </div>
+    `;
+
+    teamMembersDiv.appendChild(wrapper);
+  }
+}
+
+teamSizeSelect.addEventListener("change", renderTeamMembers);
+renderTeamMembers();
 
 
 
-    <button type="submit"> Submit Registration</button>
+// ------------------ FORM SUBMIT (FULLY MATCHED TO FRONTEND) ------------------
+document.querySelector("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target;
 
-    
+  try {
+    // PERSONAL
+    const fullName = clean(form.querySelectorAll("input[type='text']")[0].value);
+    const email = clean(form.querySelector("input[type='email']").value);
+    const phone = clean(form.querySelectorAll("input[type='text']")[1].value);
 
-  </form>
-</div>
+    // ACADEMIC
+    const college = clean(form.querySelectorAll("input[type='text']")[2].value);
+    const branch = clean(form.querySelectorAll("select")[0].value);
+    const year = clean(form.querySelectorAll("select")[1].value);
 
+    // TEAM
+    const teamName = clean(form.querySelectorAll("input[type='text']")[3].value);
+    const leaderGit = clean(form.querySelectorAll("input[type='text']")[4].value);
+    const teamSize = parseInt(teamSizeSelect.value);
 
+    let members = [];
+    document.querySelectorAll(".member-box").forEach((box) => {
+      members.push({
+        name: clean(box.querySelector(".m-name")?.value),
+        email: clean(box.querySelector(".m-email")?.value),
+        branch: clean(box.querySelector(".m-branch")?.value),
+        github: clean(box.querySelector(".m-git")?.value)
+      });
+    });
 
+    // SKILLS
+    const skills = clean(form.querySelector("textarea").value);
+
+    // LOGISTICS
+    const accommodation = clean(form.querySelectorAll("select")[2].value);
+    const arrival = clean(form.querySelector("input[type='datetime-local']").value);
+    const food = clean(form.querySelectorAll("select")[3].value);
+
+    // ADDITIONAL INFO
+    const heardFrom = clean(form.querySelectorAll("select")[4].value);
+    const participatedBefore = clean(form.querySelectorAll("select")[5].value);
+    const tshirt = clean(form.querySelectorAll("select")[6].value);
+
+    // SAVE → FIRESTORE
+    await addDoc(collection(db, "hackathon_registrations"), {
+      timestamp: new Date(),
+
+      personal: { fullName, email, phone },
+      academic: { college, branch, year },
+
+      team: { teamName, leaderGit, teamSize, members },
+
+      skills,
+      logistics: { accommodation, arrival, food },
+
+      additionalInfo: { heardFrom, participatedBefore, tshirt }
+    });
+
+    alert("🎉 Registration Submitted Successfully!");
+    form.reset();
+    renderTeamMembers();
+
+  } catch (err) {
+    console.error(err);
+    alert("⚠️ Error: " + err.message);
+  }
+});
+</script>
 
 </body>
-<script type="module" src="script.js"></script>
 </html>
