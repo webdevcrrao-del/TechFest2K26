@@ -4,10 +4,6 @@ import {
   getFirestore, collection, addDoc 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-import { 
-  getStorage, ref, uploadBytes, getDownloadURL 
-} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-
 // ------------------ Firebase Config ------------------
 const firebaseConfig = {
   apiKey: "AIzaSyAXMe-TpFvw6X-ry43wdevjGHFrmldyiQA",
@@ -21,41 +17,13 @@ const firebaseConfig = {
 // ------------------ Initialize Firebase ------------------
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
 // Utility function → return "NA" if blank
 function getValue(v) {
   return v && v.trim() !== "" ? v : "NA";
 }
 
-// Upload file to Firebase Storage
-async function uploadFile(file, path) {
-  if (!file) return "NA";
-
-  console.log("Uploading file to:", path);
-
-  try {
-    const storageRef = ref(storage, path);
-    console.log("Storage ref created:", storageRef);
-
-    const snapshot = await uploadBytes(storageRef, file);
-    console.log("Upload complete:", snapshot);
-
-    const url = await getDownloadURL(storageRef);
-    console.log("Download URL:", url);
-
-    return url;
-
-  } catch (err) {
-    console.error("🔥 UPLOAD ERROR:", err);
-    alert("Upload failed: " + err.message);
-    return "NA";
-  }
-}
-
-
-
-// Render Team Members UI
+// ------------------ RENDER TEAM MEMBERS ------------------
 window.renderMembers = function () {
   const size = document.getElementById("teamSize").value;
   const box = document.getElementById("teamMembers");
@@ -103,7 +71,6 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     const leaderGit = getValue(form.querySelectorAll("input[type='text']")[4].value);
     const teamSize = getValue(document.getElementById("teamSize").value);
 
-    // Collect team members
     let teamMembers = [];
     const boxes = document.querySelectorAll(".member-box");
 
@@ -117,14 +84,6 @@ document.querySelector("form").addEventListener("submit", async (e) => {
 
     // ---------------- Skills ----------------
     const skills = getValue(form.querySelector("textarea").value);
-
-    // ---------------- Uploads ----------------
-    const fileInputs = form.querySelectorAll("input[type='file']");
-    const idCardFile = fileInputs[0].files[0];
-    const resumeFile = fileInputs[1].files[0];
-
-    const idCardURL = await uploadFile(idCardFile, `idcards/${teamName}_${Date.now()}`);
-    const resumeURL = await uploadFile(resumeFile, `resumes/${teamName}_${Date.now()}`);
 
     // ---------------- Logistics ----------------
     const accommodation = getValue(form.querySelectorAll("select")[2].value);
@@ -146,7 +105,10 @@ document.querySelector("form").addEventListener("submit", async (e) => {
       team: { teamName, leaderGit, teamSize, teamMembers },
 
       skills,
-      uploads: { idCardURL, resumeURL },
+      uploads: { 
+        idCardURL: "NA", 
+        resumeURL: "NA" 
+      },
 
       logistics: { accommodation, arrival, food },
 
