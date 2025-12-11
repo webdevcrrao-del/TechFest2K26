@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>24-Hour Hackathon Registration</title>
+
+  <style>
+    body {
+      background: #eef2ff;
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 850px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    }
+
+    h1 {
+      text-align:center;
+      color:#1e3a8a;
+    }
+
+    h2 {
+      color: #2563eb;
+      border-left: 5px solid #2563eb;
+      padding-left: 10px;
+      margin-top: 30px;
+    }
+
+    label {
+      margin-top: 12px;
+      display: block;
+      font-weight: 600;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 15px;
+    }
+
+    .member-box {
+      background: #f1f5ff;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+      border-left: 4px solid #2563eb;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 25px;
+      background:#2563eb;
+      color:white;
+      border:none;
+      border-radius: 10px;
+      font-size:18px;
+      cursor:pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background:#1d4ed8;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>24-Hour Hackathon Registration</h1>
+
+  <form>
+
+    <!-- Basic Personal Details -->
+    <h2>1. Personal Details</h2>
+
+    <label>Full Name</label>
+    <input type="text" required />
+
+    <label>Email ID</label>
+    <input type="email" required />
+
+    <label>Mobile Number (WhatsApp)</label>
+    <input type="text" required />
+
+    <!-- Academic Details -->
+    <h2>2. Academic Details</h2>
+
+    <label>College / Institute Name</label>
+    <input type="text" required />
+
+    <label>Department / Branch</label>
+    <select required>
+      <option value="">Select</option>
+      <option>CSE</option>
+      <option>DS</option>
+      <option>ECE</option>
+      <option>AIML</option>
+      <option>EEE</option>
+    </select>
+
+    <label>Year of Study</label>
+    <select>
+      <option>1st Year</option>
+      <option>2nd Year</option>
+      <option>3rd Year</option>
+      <option>4th Year</option>
+      <option>PG</option>
+    </select>
+
+    <!-- Team Registration -->
+    <h2>3. Team Registration</h2>
+
+    <label>Team Name</label>
+    <input type="text" required />
+
+    <label>Team Leader GitHub / Portfolio</label>
+    <input type="text" placeholder="https://github.com/username" />
+
+    <label>Team Size</label>
+    <select id="teamSize" >
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+    </select>
+
+    <div id="teamMembers"></div>
+
+    <!-- Skills -->
+    <h2>4. Skills & Tech Stack</h2>
+
+    <label>Skills (Optional)</label>
+    <textarea placeholder="Example: MERN, Python, ML, Flutter, IoT..."></textarea>
+
+
+  
+
+
+      <!-- Logistics -->
+    <h2>5. Accommodation & Logistics</h2>
+
+    <label>Need Accommodation?</label>
+    <select>
+      <option>No</option>
+      <option>Yes</option>
+    </select>
+
+    <label>Arrival Date & Time</label>
+    <input type="datetime-local" />
+
+    <label>Food Preference</label>
+    <select>
+      <option>Veg</option>
+      <option>Non-Veg</option>
+    </select>
+   
+
+     <!-- Optional Analytics -->
+    <h2>6. Additional Info</h2>
+
+    <label>How did you hear about this TechFest?</label>
+    <select>
+      <option>Instagram</option>
+      <option>Friends</option>
+      <option>Website</option>
+      <option>Posters</option>
+      <option>Faculty</option>
+    </select>
+
+    <label>Previous participation?</label>
+    <select>
+      <option>No</option>
+      <option>Yes</option>
+    </select>
+
+    <label>T-shirt Size</label>
+    <select>
+      <option>S</option>
+      <option>M</option>
+      <option>L</option>
+      <option>XL</option>
+      <option>XXL</option>
+    </select>
+
+ <!-- Terms -->
+    <h2>7. Terms & Agreement</h2>
+
+    <label><input type="checkbox" required> I agree to follow all Hackathon rules</label>
+    <label><input type="checkbox" required> I understand it’s a 24-hour offline hackathon</label>
+    <label><input type="checkbox" required> I allow my photos/videos to be used for promotions</label>
+
+
+
+    <button type="submit">🚀 Submit Registration</button>
+
+    
+
+  </form>
+</div>
+
+
+
+
+</body>
+<script type="module" src="script.js"></script>
+</html>
