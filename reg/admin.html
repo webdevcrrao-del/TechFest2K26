@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hackathon Admin Panel</title>
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --secondary: #1e3a8a;
+      --bg: #eef2ff;
+      --white: #ffffff;
+      --text-dark: #1f2937;
+      --text-light: #6b7280;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--secondary);
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    /* Top button container */
+    .top-controls {
+      text-align: center;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    #exportCSVBtn {
+      background: var(--primary);
+      color: white;
+    }
+
+    #exportCSVBtn:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+    }
+
+    /* Search bar */
+    #searchBar {
+      width: 100%;
+      max-width: 350px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      font-size: 16px;
+      display: block;
+      margin: 0 auto 20px auto;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    /* Table design */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    th {
+      background: var(--primary);
+      color: white;
+      padding: 14px;
+      text-align: left;
+      font-size: 15px;
+    }
+
+    td {
+      padding: 14px;
+      font-size: 14px;
+      color: var(--text-dark);
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    tr:hover {
+      background: #f8f9ff;
+      transition: 0.2s;
+    }
+
+    /* Responsive Table (Mobile) */
+    @media (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tr {
+        margin-bottom: 15px;
+        border-radius: 10px;
+        background: white;
+        padding: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      }
+
+      td {
+        border: none;
+        position: relative;
+        padding-left: 120px;
+        min-height: 35px;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-weight: 600;
+        color: var(--text-light);
+      }
+
+      #searchBar {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1>Hackathon Registrations – Admin Dashboard</h1>
+
+<div class="top-controls">
+  <button id="exportCSVBtn">Export as CSV</button>
+</div>
+
+<input id="searchBar" type="text" placeholder="Search by team name, leader, college...">
+
+<table id="teamTable">
+  <thead>
+    <tr>
+      <th>Team Name</th>
+      <th>Leader</th>
+      <th>College</th>
+      <th>Branch</th>
+      <th>Members</th>
+      <th>Contact</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody"></tbody>
+</table>
+
+<script type="module">
+  // Firebase imports
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  // Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyAXMe-TpFvw6X-ry43wdevjGHFrmldyiQA",
+    authDomain: "chatbot-5ce023.firebaseapp.com",
+    projectId: "chatbot-5ce023",
+    storageBucket: "chatbot-5ce023.appspot.com",
+    messagingSenderId: "1015838198134",
+    appId: "1:1015838198134:web:93b33a69c2c44010309257"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const tableBody = document.getElementById("tableBody");
+  const searchBar = document.getElementById("searchBar");
+
+  let allTeams = [];
+
+  async function loadTeams() {
+    const querySnapshot = await getDocs(collection(db, "hackathon_registrations"));
+    allTeams = [];
+
+    querySnapshot.forEach(doc => allTeams.push(doc.data()));
+
+    renderTable(allTeams);
+  }
+
+  function renderTable(data) {
+    tableBody.innerHTML = "";
+
+    data.forEach(entry => {
+      const members = entry.team.teamMembers.map(m => `${m.memberName} (${m.memberEmail})`).join("<br>");
+
+      tableBody.innerHTML += `
+        <tr>
+          <td data-label="Team Name">${entry.team.teamName}</td>
+          <td data-label="Leader">${entry.personal.fullName}<br>${entry.personal.email}</td>
+          <td data-label="College">${entry.academic.college}</td>
+          <td data-label="Branch">${entry.academic.branch}</td>
+          <td data-label="Members">${members}</td>
+          <td data-label="Contact">${entry.personal.phone}</td>
+        </tr>
+      `;
+    });
+  }
+
+  function exportCSV(data) {
+    const rows = [];
+
+    rows.push([
+      "Team Name", "Leader", "Leader Email", "Phone", "College",
+      "Branch", "Year", "Members", "Skills", "Accommodation",
+      "Arrival", "Food", "Heard From", "Participated Before", "T-shirt"
+    ]);
+
+    data.forEach(entry => {
+      const members = entry.team.teamMembers
+        .map(m => `${m.memberName} (${m.memberEmail}, ${m.memberPhone})`)
+        .join("; ");
+
+      rows.push([
+        entry.team.teamName,
+        entry.personal.fullName,
+        entry.personal.email,
+        entry.personal.phone,
+        entry.academic.college,
+        entry.academic.branch,
+        entry.academic.year,
+        members,
+        entry.skills,
+        entry.logistics.accommodation,
+        entry.logistics.arrival,
+        entry.logistics.food,
+        entry.additionalInfo.heardFrom,
+        entry.additionalInfo.participatedBefore,
+        entry.additionalInfo.tshirt
+      ]);
+    });
+
+    let csvContent = "data:text/csv;charset=utf-8," + 
+      rows.map(e => e.join(",")).join("\n");
+
+    const link = document.createElement("a");
+    link.href = encodeURI(csvContent);
+    link.download = "hackathon_registrations.csv";
+    link.click();
+  }
+
+  document.getElementById("exportCSVBtn").addEventListener("click", () => {
+    exportCSV(allTeams);
+  });
+
+  searchBar.addEventListener("input", () => {
+    const term = searchBar.value.toLowerCase();
+    const filtered = allTeams.filter(t =>
+      t.team.teamName.toLowerCase().includes(term) ||
+      t.personal.fullName.toLowerCase().includes(term) ||
+      t.academic.college.toLowerCase().includes(term)
+    );
+    renderTable(filtered);
+  });
+
+  loadTeams();
+</script>
+
+</body>
+</html>
