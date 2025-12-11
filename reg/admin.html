@@ -7,153 +7,175 @@
 
   <style>
     :root {
-      --primary: #2563eb;
-      --secondary: #1e3a8a;
-      --bg: #eef2ff;
-      --white: #ffffff;
-      --text-dark: #1f2937;
-      --text-light: #6b7280;
+      --bg-dark: #0f172a;
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --accent: #38bdf8;
+      --accent-strong: #0ea5e9;
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border-light: rgba(148, 163, 184, 0.25);
     }
 
     body {
-      font-family: "Poppins", sans-serif;
-      background: var(--bg);
       margin: 0;
       padding: 20px;
+      font-family: "Poppins", sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, #1e3a8a 0, transparent 60%),
+        radial-gradient(circle at 100% 100%, #0ea5e9 0, transparent 55%),
+        #0f172a;
+      color: var(--text-main);
+      min-height: 100vh;
     }
 
+    /* Header */
     h1 {
       text-align: center;
-      color: var(--secondary);
       font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-family: "Space Mono", monospace;
     }
 
-    /* Top button container */
+    /* Top Controls */
     .top-controls {
-      text-align: center;
-      margin-bottom: 15px;
       display: flex;
       justify-content: center;
-      gap: 15px;
+      gap: 16px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
     }
 
     button {
-      padding: 10px 20px;
+      padding: 12px 24px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: linear-gradient(90deg, #0ea5e9, #38bdf8, #6366f1);
+      color: white;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+      transition: 0.25s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 0 22px rgba(56, 189, 248, 0.75);
+      filter: brightness(1.1);
+    }
+
+    /* Search Box */
+    #searchBar {
+      width: 100%;
+      max-width: 420px;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border-light);
+      font-size: 15px;
+      display: block;
+      margin: 0 auto 20px auto;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(10px);
+      color: var(--text-main);
+      outline: none;
       transition: 0.2s;
     }
 
-    #exportCSVBtn {
-      background: var(--primary);
-      color: white;
+    #searchBar:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
     }
 
-    #exportCSVBtn:hover {
-      background: #1d4ed8;
-      transform: translateY(-2px);
-    }
-
-    /* Search bar */
-    #searchBar {
-      width: 100%;
-      max-width: 350px;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
-      font-size: 16px;
-      display: block;
-      margin: 0 auto 20px auto;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    /* Table design */
+    /* Table */
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 10px;
-      background: var(--white);
-      border-radius: 12px;
+      background: var(--card-bg);
+      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      backdrop-filter: blur(12px);
+      box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(56, 189, 248, 0.15);
     }
 
     th {
-      background: var(--primary);
-      color: white;
+      background: rgba(56, 189, 248, 0.18);
+      color: var(--accent);
       padding: 14px;
       text-align: left;
-      font-size: 15px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+      font-family: "Space Mono", monospace;
     }
 
     td {
       padding: 14px;
       font-size: 14px;
-      color: var(--text-dark);
-      border-bottom: 1px solid #e5e7eb;
+      color: var(--text-main);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
     }
 
     tr:hover {
-      background: #f8f9ff;
+      background: rgba(56, 189, 248, 0.06);
       transition: 0.2s;
     }
 
-    /* Responsive Table (Mobile) */
+    /* Responsive Table */
     @media (max-width: 768px) {
       table, thead, tbody, th, td, tr {
         display: block;
       }
 
-      thead {
-        display: none;
-      }
+      thead { display: none; }
 
       tr {
-        margin-bottom: 15px;
-        border-radius: 10px;
-        background: white;
-        padding: 12px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        margin-bottom: 14px;
+        padding: 14px;
+        border-radius: 12px;
+        background: rgba(15,23,42,0.8);
       }
 
       td {
         border: none;
         position: relative;
-        padding-left: 120px;
-        min-height: 35px;
+        padding-left: 130px;
+        min-height: 40px;
       }
 
       td::before {
         content: attr(data-label);
         position: absolute;
-        left: 10px;
+        left: 14px;
         top: 50%;
         transform: translateY(-50%);
         font-weight: 600;
-        color: var(--text-light);
+        color: var(--text-muted);
       }
 
-      #searchBar {
-        width: 90%;
-      }
+      #searchBar { width: 90%; }
     }
   </style>
 </head>
+
 <body>
 
-<h1>Hackathon Registrations – Admin Dashboard</h1>
+<h1>TechFest2K26 • Admin Dashboard</h1>
 
 <div class="top-controls">
-  <button id="exportCSVBtn">Export as CSV</button>
+  <button id="exportCSVBtn">Export CSV</button>
 </div>
 
-<input id="searchBar" type="text" placeholder="Search by team name, leader, college...">
+<input id="searchBar" type="text" placeholder="Search team, leader, college...">
 
 <table id="teamTable">
   <thead>
@@ -169,12 +191,11 @@
   <tbody id="tableBody"></tbody>
 </table>
 
+
 <script type="module">
-  // Firebase imports
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-  // Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyAXMe-TpFvw6X-ry43wdevjGHFrmldyiQA",
     authDomain: "chatbot-5ce023.firebaseapp.com",
@@ -189,15 +210,11 @@
 
   const tableBody = document.getElementById("tableBody");
   const searchBar = document.getElementById("searchBar");
-
   let allTeams = [];
 
   async function loadTeams() {
-    const querySnapshot = await getDocs(collection(db, "hackathon_registrations"));
-    allTeams = [];
-
-    querySnapshot.forEach(doc => allTeams.push(doc.data()));
-
+    const snapshot = await getDocs(collection(db, "hackathon_registrations"));
+    allTeams = snapshot.docs.map(doc => doc.data());
     renderTable(allTeams);
   }
 
@@ -205,7 +222,9 @@
     tableBody.innerHTML = "";
 
     data.forEach(entry => {
-      const members = entry.team.teamMembers.map(m => `${m.memberName} (${m.memberEmail})`).join("<br>");
+      const members = entry.team.members
+        .map(m => `${m.name} (${m.email})`)
+        .join("<br>");
 
       tableBody.innerHTML += `
         <tr>
@@ -226,12 +245,12 @@
     rows.push([
       "Team Name", "Leader", "Leader Email", "Phone", "College",
       "Branch", "Year", "Members", "Skills", "Accommodation",
-      "Arrival", "Food", "Heard From", "Participated Before", "T-shirt"
+      "Arrival", "Food", "Heard From", "Previous Participation", "T-shirt"
     ]);
 
     data.forEach(entry => {
-      const members = entry.team.teamMembers
-        .map(m => `${m.memberName} (${m.memberEmail}, ${m.memberPhone})`)
+      const members = entry.team.members
+        .map(m => `${m.name} (${m.email}, ${m.branch})`)
         .join("; ");
 
       rows.push([
@@ -253,8 +272,8 @@
       ]);
     });
 
-    let csvContent = "data:text/csv;charset=utf-8," + 
-      rows.map(e => e.join(",")).join("\n");
+    let csvContent = "data:text/csv;charset=utf-8,"
+      + rows.map(r => r.join(",")).join("\n");
 
     const link = document.createElement("a");
     link.href = encodeURI(csvContent);
@@ -267,12 +286,14 @@
   });
 
   searchBar.addEventListener("input", () => {
-    const term = searchBar.value.toLowerCase();
-    const filtered = allTeams.filter(t =>
-      t.team.teamName.toLowerCase().includes(term) ||
-      t.personal.fullName.toLowerCase().includes(term) ||
-      t.academic.college.toLowerCase().includes(term)
+    const t = searchBar.value.toLowerCase();
+
+    const filtered = allTeams.filter(entry =>
+      entry.team.teamName.toLowerCase().includes(t) ||
+      entry.personal.fullName.toLowerCase().includes(t) ||
+      entry.academic.college.toLowerCase().includes(t)
     );
+
     renderTable(filtered);
   });
 
