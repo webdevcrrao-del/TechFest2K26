@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TechFest2K26 · 24-Hour Hackathon</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #020617;
+      --bg-card: rgba(15, 23, 42, 0.85);
+      --accent: #38bdf8;
+      --accent-strong: #0ea5e9;
+      --accent-soft: rgba(56, 189, 248, 0.12);
+      --border-subtle: rgba(148, 163, 184, 0.35);
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --danger: #f97373;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-main);
+      background: #020617;
+    }
+
+    body {
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Parallax background layers */
+    .parallax-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -5;
+    }
+
+    /* Base gradient background */
+    .layer-base {
+      background:
+        radial-gradient(circle at 0% 0%, #1d4ed8 0, transparent 50%),
+        radial-gradient(circle at 100% 100%, #22c55e 0, transparent 55%),
+        radial-gradient(circle at 100% 0%, #a855f7 0, transparent 50%),
+        #020617;
+    }
+
+    /* Animated grid */
+    .layer-grid {
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.16) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.16) 1px, transparent 1px);
+      background-size: 42px 42px;
+      opacity: 0.22;
+      animation: grid-move 40s linear infinite;
+      mix-blend-mode: screen;
+    }
+
+    @keyframes grid-move {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-80px, -80px, 0); }
+    }
+
+    /* Glow layer */
+    .layer-glow {
+      background:
+        radial-gradient(circle at 50% 0, rgba(56, 189, 248, 0.32), transparent 55%),
+        radial-gradient(circle at 80% 80%, rgba(129, 140, 248, 0.22), transparent 60%);
+      opacity: 0.8;
+      filter: blur(2px);
+    }
+
+    /* Floating particles */
+    .layer-particles {
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(148, 163, 184, 0.65) 0, transparent 45%),
+        radial-gradient(circle at 70% 60%, rgba(56, 189, 248, 0.8) 0, transparent 55%),
+        radial-gradient(circle at 30% 90%, rgba(96, 165, 250, 0.7) 0, transparent 50%);
+      background-size: 400px 400px;
+      opacity: 0.18;
+      animation: float-particles 35s ease-in-out infinite alternate;
+      mix-blend-mode: screen;
+    }
+
+    @keyframes float-particles {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(-40px, -30px, 0) scale(1.05); }
+      100% { transform: translate3d(40px, 40px, 0) scale(0.98); }
+    }
+
+    /* Page layout */
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px) saturate(160%);
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.78),
+        transparent
+      );
+      border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .nav {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 30% 0%, #38bdf8 0, transparent 55%),
+        radial-gradient(circle at 70% 90%, #6366f1 0, transparent 55%);
+      box-shadow:
+        0 0 20px rgba(56, 189, 248, 0.9),
+        0 0 30px rgba(99, 102, 241, 0.7);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-logo::after {
+      content: "</>";
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 13px;
+      color: #0b1120;
+      font-weight: 700;
+    }
+
+    .nav-title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-title-main {
+      font-family: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 13px;
+      color: #e5e7eb;
+    }
+
+    .nav-title-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 3px;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 1px;
+      width: 0;
+      background: linear-gradient(90deg, transparent, var(--accent-strong));
+      transition: width 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.8);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--accent);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: "Space Mono", ui-monospace;
+      transition: 0.22s ease;
+    }
+
+    .nav-cta span.dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.9);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.7);
+      background: rgba(15, 23, 42, 0.98);
+      color: #e5e7eb;
+    }
+
+    /* Hero section */
+    .hero {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 80px 20px 72px;
+      display: grid;
+      grid-template-columns: minmax(0, 3.2fr) minmax(0, 2.8fr);
+      gap: 36px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.5);
+      background: rgba(15, 23, 42, 0.8);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    .hero h1 {
+      margin: 18px 0 10px;
+      font-size: 40px;
+      line-height: 1.1;
+      color: #e5e7eb;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-family: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 540px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .meta-pill span {
+      color: #e5e7eb;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+      align-items: center;
+    }
+
+    .btn-primary {
+      position: relative;
+      padding: 14px 22px;
+      border-radius: 14px;
+      border: 2px solid var(--accent);
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      cursor: pointer;
+      overflow: hidden;
+      font-family: "Space Mono", ui-monospace;
+      transition: 0.25s ease;
+    }
+
+    /* neon border */
+    .btn-primary::before {
+      content: "";
+      position: absolute;
+      top: -2px; left: -2px;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      background: linear-gradient(120deg, #0ea5e9, #38bdf8, #6366f1, #22c55e);
+      background-size: 300% 300%;
+      animation: neonGlow 4s linear infinite;
+      z-index: -1;
+      border-radius: 16px;
+    }
+
+    @keyframes neonGlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 22px rgba(56, 189, 248, 0.7);
+      border-color: #0ea5e9;
+    }
+
+    .btn-ghost {
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--text-muted);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: "Space Mono", ui-monospace;
+      transition: 0.22s ease;
+    }
+
+    .btn-ghost:hover {
+      border-style: solid;
+      border-color: rgba(56, 189, 248, 0.7);
+      color: #e5e7eb;
+      transform: translateY(-1px);
+    }
+
+    .hero-note {
+      margin-top: 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .hero-note span {
+      color: #a5b4fc;
+    }
+
+    /* Hero visual card */
+    .hero-card {
+      background: var(--bg-card);
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow:
+        0 24px 60px rgba(15, 23, 42, 0.9),
+        0 0 60px rgba(56, 189, 248, 0.16);
+      backdrop-filter: blur(20px) saturate(140%);
+      padding: 20px 18px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(56, 189, 248, 0.16), transparent 60%),
+        radial-gradient(circle at 90% 100%, rgba(129, 140, 248, 0.12), transparent 60%);
+      opacity: 0.8;
+      z-index: -1;
+    }
+
+    .hero-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .hero-card-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      font-family: "Space Mono", ui-monospace;
+    }
+
+    .hero-card-tag {
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #e5e7eb;
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      font-family: "Space Mono", ui-monospace;
+      font-size: 11px;
+    }
+
+    .metric {
+      padding: 10px 9px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .metric-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .metric-value {
+      margin-top: 4px;
+      font-size: 15px;
+      color: #e5e7eb;
+    }
+
+    .metric-sub {
+      font-size: 10px;
+      color: #a5b4fc;
+    }
+
+    .hero-card-footer {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .status-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(34, 197, 94, 0.7);
+      background: rgba(22, 163, 74, 0.15);
+      color: #bbf7d0;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: "Space Mono", ui-monospace;
+    }
+
+    .status-pill span.dot {
+      width: 6px;
+      height: 6px;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    /* Sections */
+    section {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .section-title {
+      color: var(--accent-strong);
+      font-size: 16px;
+      margin: 0 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-family: "Space Mono", ui-monospace;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 18px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, var(--accent-strong));
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 640px;
+    }
+
+    /* About grid */
+    .about-grid {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: minmax(0, 2.3fr) minmax(0, 2.2fr);
+      gap: 24px;
+    }
+
+    .about-card {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 16px 16px 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.16), transparent 55%);
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .about-card h3 {
+      margin: 0 0 8px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      font-family: "Space Mono", ui-monospace;
+    }
+
+    .about-card p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .about-highlights {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .about-pill {
+      padding: 7px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+    }
+
+    .about-pill span {
+      color: #e5e7eb;
+    }
+
+    /* Tracks */
+    .tracks-grid {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .track-card {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 12px 11px 11px;
+      font-size: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .track-badge {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      font-family: "Space Mono", ui-monospace;
+      margin-bottom: 4px;
+    }
+
+    .track-title {
+      font-size: 13px;
+      color: #e5e7eb;
+      margin-bottom: 4px;
+    }
+
+    .track-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Schedule */
+    .schedule-grid {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 2.6fr);
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .schedule-summary {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 14px 13px 12px;
+      font-size: 12px;
+    }
+
+    .schedule-summary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .schedule-summary-row span.label {
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    .schedule-summary-row span.value {
+      color: #e5e7eb;
+      font-family: "Space Mono", ui-monospace;
+      font-size: 11px;
+    }
+
+    .timeline {
+      border-left: 1px solid rgba(148, 163, 184, 0.5);
+      padding-left: 14px;
+      position: relative;
+      font-size: 12px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -15px;
+      top: 3px;
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #38bdf8;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.9);
+    }
+
+    .timeline-time {
+      font-family: "Space Mono", ui-monospace;
+      font-size: 11px;
+      color: #a5b4fc;
+      margin-bottom: 2px;
+    }
+
+    .timeline-title {
+      font-size: 13px;
+      color: #e5e7eb;
+    }
+
+    .timeline-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Sponsors */
+    .sponsors-grid {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .sponsor-card {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 14px;
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      padding: 14px 10px;
+      text-align: center;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+    }
+
+    .sponsor-name {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #e5e7eb;
+    }
+
+    /* Registration section placeholder */
+    .registration-wrapper {
+      margin-top: 22px;
+      background: var(--bg-card);
+      padding: 24px 20px 26px;
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow:
+        0 24px 60px rgba(15, 23, 42, 0.9),
+        0 0 60px rgba(56, 189, 248, 0.16);
+      backdrop-filter: blur(20px) saturate(140%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .registration-wrapper::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(56, 189, 248, 0.16), transparent 60%),
+        radial-gradient(circle at 90% 100%, rgba(129, 140, 248, 0.12), transparent 60%);
+      opacity: 0.8;
+      z-index: -1;
+    }
+
+    .registration-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .reg-id {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      font-family: "Space Mono", ui-monospace;
+    }
+
+    .reg-id span {
+      color: #a5b4fc;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border: 1px solid rgba(56, 189, 248, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--accent);
+    }
+
+    .chip span.pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .registration-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .registration-placeholder {
+      padding: 16px 14px;
+      border-radius: 14px;
+      border: 1px dashed rgba(148, 163, 184, 0.7);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .registration-placeholder code {
+      display: block;
+      margin-top: 6px;
+      font-size: 11px;
+      padding: 8px;
+      border-radius: 8px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      font-family: "Space Mono", ui-monospace;
+      overflow-x: auto;
+    }
+
+    footer {
+      padding: 22px 20px 26px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      border-top: 1px solid rgba(30, 64, 175, 0.6);
+      background: radial-gradient(circle at 50% -40%, rgba(37, 99, 235, 0.5), transparent 60%);
+      margin-top: 10px;
+    }
+
+    /* === NEW: Right Sidebar === */
+    .sidebar {
+      position: fixed;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 12;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-family: "Space Mono", ui-monospace;
+    }
+
+    .sidebar-item {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      padding: 10px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-muted);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar-item::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.16), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .sidebar-item span.dot {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+    }
+
+    .sidebar-item:hover {
+      color: #e5e7eb;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .sidebar-item:hover::before {
+      opacity: 1;
+    }
+
+    /* Highlight one as primary */
+    .sidebar-item.primary {
+      border-color: #a855f7;
+      color: #e5e7eb;
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+        padding-top: 64px;
+      }
+
+      .hero-card {
+        order: -1;
+      }
+
+      .about-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .tracks-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .sponsors-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .schedule-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav {
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero h1 {
+        font-size: 30px;
+      }
+
+      section {
+        padding-inline: 16px;
+      }
+
+      .registration-wrapper {
+        padding-inline: 16px;
+      }
+
+      /* Hide sidebar on small screens */
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Parallax background layers -->
+  <div class="parallax-layer layer-base"></div>
+  <div class="parallax-layer layer-grid"></div>
+  <div class="parallax-layer layer-glow"></div>
+  <div class="parallax-layer layer-particles"></div>
+
+  <!-- NEW SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-item primary" onclick="window.location.href='acc.html'">
+      <span class="dot"></span>
+      Accommodation
+    </div>
+    <div class="sidebar-item" onclick="window.location.href='comp.html'">
+      Competition
+    </div>
+    <div class="sidebar-item">
+      Special Guests
+    </div>
+  </div>
+
+  <div class="page-wrapper">
+    <!-- Header / Nav -->
+    <header>
+      <div class="nav">
+        <div class="nav-left">
+          <div class="nav-logo"></div>
+          <div class="nav-title">
+            <div class="nav-title-main">TECHFEST2K26</div>
+            <div class="nav-title-sub">24-Hour Offline Hackathon · Build, Ship, Repeat.</div>
+          </div>
+        </div>
+        <div class="nav-links">
+          <a href="#about">About</a>
+          <a href="#tracks">Tracks</a>
+          <a href="#schedule">Schedule</a>
+          <a href="#sponsors">Sponsors</a>
+          <button class="nav-cta" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">
+            <span class="dot"></span>
+            Register
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <main>
+      <section class="hero">
+        <div>
+          <div class="badge">
+            <span class="dot"></span>
+            24-Hour Offline Hackathon · Limited Slots
+          </div>
+
+          <h1>TechFest2K26 Hackathon</h1>
+
+          <p class="hero-subtitle">
+            Ship a working prototype in 24 hours, collaborate with top builders,
+            and compete for cash prizes, swags, and internship opportunities.
+          </p>
+
+          <div class="hero-meta">
+            <div class="meta-pill">
+              <span>DATE</span> · 14–15 March 2026
+            </div>
+            <div class="meta-pill">
+              <span>VENUE</span> · On-Campus Innovation Hub
+            </div>
+            <div class="meta-pill">
+              <span>TEAM SIZE</span> · 1–4 Members
+            </div>
+          </div>
+
+          <div class="hero-cta-row">
+            <button class="btn-primary" onclick="document.getElementById('register').scrollIntoView({behavior:'smooth'})">
+              Register Now
+            </button>
+            <button class="btn-ghost" onclick="document.getElementById('schedule').scrollIntoView({behavior:'smooth'})">
+              View Schedule →
+            </button>
+          </div>
+
+          <div class="hero-note">
+            REG ID: <span>TF-26-HACK</span> · Early bird registrations close soon.
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-card-header">
+            <div class="hero-card-title">Live Hackathon Telemetry</div>
+            <div class="hero-card-tag">Build · Ship · Repeat</div>
+          </div>
+
+          <div class="hero-metrics">
+            <div class="metric">
+              <div class="metric-label">Registered Teams</div>
+              <div class="metric-value">128<span class="metric-sub"> / 150</span></div>
+              <div class="metric-sub">Slots filling fast</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Prize Pool</div>
+              <div class="metric-value">₹ 1,50,000</div>
+              <div class="metric-sub">+ Swags & Goodies</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Problem Statements</div>
+              <div class="metric-value">12</div>
+              <div class="metric-sub">From Industry & Faculty</div>
+            </div>
+          </div>
+
+          <div class="hero-card-footer">
+            <div class="status-pill">
+              <span class="dot"></span>
+              Status: Registrations Open
+            </div>
+            <span>Shortlisting based on team details & tech stack.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section id="about">
+        <h2 class="section-title">1. About TechFest2K26</h2>
+        <p class="section-subtitle">
+          A 24-hour product-focused hackathon where you build end-to-end solutions –
+          from idea to deployment – mentored by industry experts and alumni working at top tech companies.
+        </p>
+
+        <div class="about-grid">
+          <div class="about-card">
+            <h3>What to Expect</h3>
+            <p>
+              Brainstorm with your squad, ship a working MVP, and pitch to a jury of engineers, founders,
+              and faculty. Get real-time feedback, improve your GitHub repo, and build something that
+              survives beyond the hackathon.
+            </p>
+            <div class="about-highlights">
+              <div class="about-pill">
+                • <span>24-Hour Non-Stop Coding</span>
+              </div>
+              <div class="about-pill">
+                • <span>Mentor Office Hours</span>
+              </div>
+              <div class="about-pill">
+                • <span>Night-long Snacks</span>
+              </div>
+              <div class="about-pill">
+                • <span>Networking & Swags</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-card">
+            <h3>Who Should Apply</h3>
+            <p>
+              If you love shipping projects, exploring new stacks, or just want to experience a real
+              startup-style sprint, this hackathon is for you. All branches and years are welcome.
+            </p>
+            <div class="about-highlights">
+              <div class="about-pill">
+                • <span>Beginner-Friendly Tracks</span>
+              </div>
+              <div class="about-pill">
+                • <span>Advanced Challenges</span>
+              </div>
+              <div class="about-pill">
+                • <span>Cross-Branch Teams</span>
+              </div>
+              <div class="about-pill">
+                • <span>On-Spot Surprises</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tracks -->
+      <section id="tracks">
+        <h2 class="section-title">2. Hackathon Tracks</h2>
+        <p class="section-subtitle">
+          Choose a problem statement from any of the curated tracks below, or pitch your own idea
+          aligned with the theme. Cross-stack solutions are highly encouraged.
+        </p>
+
+        <div class="tracks-grid">
+          <div class="track-card">
+            <div class="track-badge">Web & Cloud</div>
+            <div class="track-title">Full-Stack Innovation</div>
+            <div class="track-desc">
+              Build production-ready web apps using MERN, Next.js, or any stack of your choice.
+            </div>
+          </div>
+          <div class="track-card">
+            <div class="track-badge">AI / ML</div>
+            <div class="track-title">Intelligent Systems</div>
+            <div class="track-desc">
+              Apply ML, LLMs, or data science to solve real-world problems using smart automation.
+            </div>
+          </div>
+          <div class="track-card">
+            <div class="track-badge">Mobile & IoT</div>
+            <div class="track-title">On-Device Experiences</div>
+            <div class="track-desc">
+              Build mobile, embedded, or hardware-integrated solutions with Flutter, React Native, or IoT.
+            </div>
+          </div>
+          <div class="track-card">
+            <div class="track-badge">Open Innovation</div>
+            <div class="track-title">Wildcard Builds</div>
+            <div class="track-desc">
+              Have a crazy idea? Ship it. Anything that solves a user problem is welcome.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Schedule -->
+      <section id="schedule">
+        <h2 class="section-title">3. Event Schedule</h2>
+        <p class="section-subtitle">
+          A tightly-packed 24-hour sprint designed to give you just enough structure to build,
+          collaborate, and ship – with plenty of caffeine in between.
+        </p>
+
+        <div class="schedule-grid">
+          <div class="schedule-summary">
+            <div class="schedule-summary-row">
+              <span class="label">Duration</span>
+              <span class="value">24 Hours</span>
+            </div>
+            <div class="schedule-summary-row">
+              <span class="label">Check-in</span>
+              <span class="value">14 Mar · 8:00 AM</span>
+            </div>
+            <div class="schedule-summary-row">
+              <span class="label">Hack Starts</span>
+              <span class="value">14 Mar · 10:00 AM</span>
+            </div>
+            <div class="schedule-summary-row">
+              <span class="label">Demo & Results</span>
+              <span class="value">15 Mar · 12:00 PM</span>
+            </div>
+          </div>
+
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">08:00 AM</div>
+              <div class="timeline-title">Check-in & Breakfast</div>
+              <div class="timeline-desc">Team verification, Wi‑Fi setup, and workspace allocation.</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">10:00 AM</div>
+              <div class="timeline-title">Hack Starts + Problem Reveal</div>
+              <div class="timeline-desc">Tracks, rules, and judging criteria explained by the core team.</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">04:00 PM</div>
+              <div class="timeline-title">Mentor Rounds</div>
+              <div class="timeline-desc">Industry mentors and alumni review your progress and unblock you.</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">11:59 PM</div>
+              <div class="timeline-title">Midnight Checkpoint</div>
+              <div class="timeline-desc">Feature freeze recommendation, deployment, and demo prep.</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">09:00 AM</div>
+              <div class="timeline-title">Demo & Judging</div>
+              <div class="timeline-desc">5-minute demos per team, followed by Q&A and final evaluations.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sponsors -->
+      <section id="sponsors">
+        <h2 class="section-title">4. Partners & Sponsors</h2>
+        <p class="section-subtitle">
+          Powered by the TechFest2K26 Core Team with support from industry partners, startups,
+          and alumni networks.
+        </p>
+
+        <div class="sponsors-grid">
+          <div class="sponsor-card">
+            Title Sponsor
+            <div class="sponsor-name">Your Company Here</div>
+          </div>
+          <div class="sponsor-card">
+            Cloud Partner
+            <div class="sponsor-name">CloudX</div>
+          </div>
+          <div class="sponsor-card">
+            Hiring Partner
+            <div class="sponsor-name">Startup Labs</div>
+          </div>
+          <div class="sponsor-card">
+            Community Partner
+            <div class="sponsor-name">DevCircle</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Registration -->
+      <section id="register">
+        <h2 class="section-title">5. Registration</h2>
+        <p class="section-subtitle">
+          Fill out the registration form with your personal, academic, and team details.
+          Shortlisted teams will receive a confirmation email with further instructions.
+        </p>
+
+        <div class="registration-wrapper">
+          <div class="registration-header">
+            <div class="reg-id">REG ID: <span>TF-26-HACK</span></div>
+            <div class="chip">
+              <span class="pill-dot"></span>
+              Powered by TechFest2K26 Core Team
+            </div>
+          </div>
+
+          <div class="registration-note">
+            You can directly embed your existing registration form markup here.
+            Replace the placeholder block below with your full form HTML.
+          </div>
+
+          <div class="registration-placeholder">
+            <!--
+              PASTE YOUR EXISTING FORM HERE.
+              For example: everything from
+              <form> ... </form> from your current registration page.
+            -->
+            This is a placeholder container for your form.
+            <code>&lt;!-- Replace this block with your TechFest2K26 registration form HTML --&gt;</code>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      © 2026 TechFest2K26 · All Rights Reserved · Crafted by the Core Team.
+    </footer>
+  </div>
+
+  <script>
+    // Simple parallax effect for background layers
+    (function () {
+      const gridLayer = document.querySelector('.layer-grid');
+      const glowLayer = document.querySelector('.layer-glow');
+      const particlesLayer = document.querySelector('.layer-particles');
+
+      function onScroll() {
+        const y = window.scrollY || window.pageYOffset;
+        if (gridLayer) gridLayer.style.transform = `translateY(${y * 0.05}px)`;
+        if (glowLayer) glowLayer.style.transform = `translateY(${y * 0.08}px)`;
+        if (particlesLayer) particlesLayer.style.transform = `translateY(${y * 0.12}px)`;
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+  </script>
+</body>
+</html>
