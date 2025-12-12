@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TechFest2K26 · Accommodation</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #020617;
+      --bg-card: rgba(15, 23, 42, 0.85);
+      --accent: #38bdf8;
+      --accent-strong: #0ea5e9;
+      --accent-soft: rgba(56, 189, 248, 0.12);
+      --border-subtle: rgba(148, 163, 184, 0.35);
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --danger: #f97373;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-main);
+      background: #020617;
+    }
+
+    body {
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Parallax background layers */
+    .parallax-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -5;
+    }
+
+    .layer-base {
+      background:
+        radial-gradient(circle at 0% 0%, #1d4ed8 0, transparent 50%),
+        radial-gradient(circle at 100% 100%, #22c55e 0, transparent 55%),
+        radial-gradient(circle at 100% 0%, #a855f7 0, transparent 50%),
+        #020617;
+    }
+
+    .layer-grid {
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.16) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.16) 1px, transparent 1px);
+      background-size: 42px 42px;
+      opacity: 0.22;
+      animation: grid-move 40s linear infinite;
+      mix-blend-mode: screen;
+    }
+
+    @keyframes grid-move {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-80px, -80px, 0); }
+    }
+
+    .layer-glow {
+      background:
+        radial-gradient(circle at 50% 0, rgba(56, 189, 248, 0.32), transparent 55%),
+        radial-gradient(circle at 80% 80%, rgba(129, 140, 248, 0.22), transparent 60%);
+      opacity: 0.8;
+      filter: blur(2px);
+    }
+
+    .layer-particles {
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(148, 163, 184, 0.65) 0, transparent 45%),
+        radial-gradient(circle at 70% 60%, rgba(56, 189, 248, 0.8) 0, transparent 55%),
+        radial-gradient(circle at 30% 90%, rgba(96, 165, 250, 0.7) 0, transparent 50%);
+      background-size: 400px 400px;
+      opacity: 0.18;
+      animation: float-particles 35s ease-in-out infinite alternate;
+      mix-blend-mode: screen;
+    }
+
+    @keyframes float-particles {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(-40px, -30px, 0) scale(1.05); }
+      100% { transform: translate3d(40px, 40px, 0) scale(0.98); }
+    }
+
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px) saturate(160%);
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 23, 42, 0.96),
+        rgba(15, 23, 42, 0.78),
+        transparent
+      );
+      border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .nav {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 30% 0%, #38bdf8 0, transparent 55%),
+        radial-gradient(circle at 70% 90%, #6366f1 0, transparent 55%);
+      box-shadow:
+        0 0 20px rgba(56, 189, 248, 0.9),
+        0 0 30px rgba(99, 102, 241, 0.7);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-logo::after {
+      content: "</>";
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Space Mono", ui-monospace;
+      font-size: 13px;
+      color: #0b1120;
+      font-weight: 700;
+    }
+
+    .nav-title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-title-main {
+      font-family: "Space Mono", ui-monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 13px;
+      color: #e5e7eb;
+    }
+
+    .nav-title-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 3px;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 1px;
+      width: 0;
+      background: linear-gradient(90deg, transparent, var(--accent-strong));
+      transition: width 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.8);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--accent);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: "Space Mono", ui-monospace;
+      transition: 0.22s ease;
+      text-decoration: none;
+    }
+
+    .nav-cta span.dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.9);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.7);
+      background: rgba(15, 23, 42, 0.98);
+      color: #e5e7eb;
+    }
+
+    /* Main layout */
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 64px 20px 40px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.5);
+      background: rgba(15, 23, 42, 0.8);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    h1 {
+      margin: 18px 0 10px;
+      font-size: 30px;
+      line-height: 1.1;
+      color: #e5e7eb;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-family: "Space Mono", ui-monospace;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 640px;
+    }
+
+    .content-grid {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: minmax(0, 2.4fr) minmax(0, 2.6fr);
+      gap: 24px;
+    }
+
+    /* Info cards */
+    .card {
+      background: var(--bg-card);
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow:
+        0 24px 60px rgba(15, 23, 42, 0.9),
+        0 0 60px rgba(56, 189, 248, 0.16);
+      backdrop-filter: blur(20px) saturate(140%);
+      padding: 18px 16px 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(56, 189, 248, 0.16), transparent 60%),
+        radial-gradient(circle at 90% 100%, rgba(129, 140, 248, 0.12), transparent 60%);
+      opacity: 0.8;
+      z-index: -1;
+    }
+
+    .card-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      font-family: "Space Mono", ui-monospace;
+      margin-bottom: 8px;
+    }
+
+    .card-section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.6fr);
+      gap: 12px;
+      margin-top: 12px;
+      font-size: 12px;
+    }
+
+    .info-item {
+      padding: 9px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .info-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .info-value {
+      margin-top: 3px;
+      font-size: 13px;
+      color: #e5e7eb;
+      font-family: "Space Mono", ui-monospace;
+    }
+
+    .info-note {
+      font-size: 11px;
+      color: #a5b4fc;
+      margin-top: 2px;
+    }
+
+    /* Calendar */
+    .calendar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .calendar-month {
+      font-family: "Space Mono", ui-monospace;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #e5e7eb;
+    }
+
+    .calendar-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .legend-pill {
+      width: 10px;
+      height: 10px;
+      border-radius: 4px;
+    }
+
+    .legend-hack {
+      background: linear-gradient(135deg, #38bdf8, #6366f1);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+    }
+
+    .legend-checkin {
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+    }
+
+    .legend-checkout {
+      background: #f97373;
+      box-shadow: 0 0 10px rgba(248, 113, 113, 0.8);
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .calendar-day-header {
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+      font-family: "Space Mono", ui-monospace;
+    }
+
+    .calendar-cell {
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid rgba(51, 65, 85, 0.8);
+      background: rgba(15, 23, 42, 0.9);
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding: 4px 5px;
+      color: var(--text-muted);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .calendar-cell span.date {
+      z-index: 2;
+      font-family: "Space Mono", ui-monospace;
+    }
+
+    .calendar-cell.empty {
+      background: transparent;
+      border-color: transparent;
+    }
+
+    .calendar-cell.hack {
+      border-color: rgba(56, 189, 248, 0.8);
+      color: #e5e7eb;
+    }
+
+    .calendar-cell.hack::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 0, rgba(56, 189, 248, 0.25), transparent 70%);
+      opacity: 0.9;
+      z-index: 1;
+    }
+
+    .calendar-cell.checkin {
+      border-color: rgba(34, 197, 94, 0.9);
+      color: #bbf7d0;
+    }
+
+    .calendar-cell.checkin::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0% 0, rgba(34, 197, 94, 0.25), transparent 70%);
+      opacity: 0.9;
+      z-index: 1;
+    }
+
+    .calendar-cell.checkout {
+      border-color: rgba(248, 113, 113, 0.9);
+      color: #fecaca;
+    }
+
+    .calendar-cell.checkout::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 100% 0, rgba(248, 113, 113, 0.25), transparent 70%);
+      opacity: 0.9;
+      z-index: 1;
+    }
+
+    .calendar-footer-note {
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .calendar-footer-note span {
+      color: #a5b4fc;
+    }
+
+    /* Bottom info */
+    .note-card {
+      margin-top: 22px;
+      padding: 14px 14px 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .note-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      font-family: "Space Mono", ui-monospace;
+      margin-bottom: 4px;
+    }
+
+    footer {
+      padding: 22px 20px 26px;
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      border-top: 1px solid rgba(30, 64, 175, 0.6);
+      background: radial-gradient(circle at 50% -40%, rgba(37, 99, 235, 0.5), transparent 60%);
+      margin-top: 18px;
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .content-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav {
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      main {
+        padding-inline: 16px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background layers -->
+  <div class="parallax-layer layer-base"></div>
+  <div class="parallax-layer layer-grid"></div>
+  <div class="parallax-layer layer-glow"></div>
+  <div class="parallax-layer layer-particles"></div>
+
+  <div class="page-wrapper">
+    <!-- Header -->
+    <header>
+      <div class="nav">
+        <div class="nav-left">
+          <div class="nav-logo"></div>
+          <div class="nav-title">
+            <div class="nav-title-main">TECHFEST2K26</div>
+            <div class="nav-title-sub">Accommodation · 24-Hour Hackathon</div>
+          </div>
+        </div>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="index.html#schedule">Schedule</a>
+          <a href="index.html#register">Register</a>
+          <a class="nav-cta" href="index.html#register">
+            <span class="dot"></span>
+            Back to Hackathon
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main>
+      <div class="badge">
+        <span class="dot"></span>
+        Official Accommodation Details
+      </div>
+
+      <h1>Accommodation for TechFest2K26</h1>
+      <p class="subtitle">
+        Participants traveling from outside the city can opt for on-campus accommodation.
+        Below are the location details, stay duration, and a visual calendar highlighting
+        the hackathon days.
+      </p>
+
+      <div class="content-grid">
+        <!-- Left: Location & duration -->
+        <div class="card">
+          <div class="card-title">Location & Duration</div>
+
+          <div class="card-section-label">Venue</div>
+          <p>
+            <strong>TechFest2K26 Hostel & Guest House Block</strong><br />
+            XYZ Institute of Technology, Innovation Campus<br />
+            Main Auditorium Road, Cityname, State - 123456
+          </p>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Check-in Window</div>
+              <div class="info-value">14 Mar 2026 · 07:00–10:00 AM</div>
+              <div class="info-note">Recommended: arrive by 8:00 AM</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Check-out Deadline</div>
+              <div class="info-value">15 Mar 2026 · 03:00 PM</div>
+              <div class="info-note">Post results & lunch</div>
+            </div>
+          </div>
+
+          <div class="card-section-label">Stay Duration</div>
+          <p>
+            Standard accommodation covers the <strong>entire hackathon window</strong>:
+            from the morning of <strong>14 March 2026</strong> till the afternoon of
+            <strong>15 March 2026</strong>. Extra nights (before/after) are not included
+            and subject to availability.
+          </p>
+
+          <div class="info-grid" style="margin-top: 12px;">
+            <div class="info-item">
+              <div class="info-label">Rooms</div>
+              <div class="info-value">Shared (3–4 / room)</div>
+              <div class="info-note">Allocated by organizing team</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Inclusions</div>
+              <div class="info-value">Mattress · Basic linens</div>
+              <div class="info-note">Food during hackathon included separately</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Calendar -->
+        <div class="card">
+          <div class="card-title">Hackathon Calendar</div>
+
+          <div class="calendar-header">
+            <div class="calendar-month">March 2026</div>
+            <div class="calendar-legend">
+              <div class="legend-item">
+                <span class="legend-pill legend-hack"></span> Hackathon Days
+              </div>
+              <div class="legend-item">
+                <span class="legend-pill legend-checkin"></span> Check-in Window
+              </div>
+              <div class="legend-item">
+                <span class="legend-pill legend-checkout"></span> Check-out
+              </div>
+            </div>
+          </div>
+
+          <!--
+            Calendar assumes:
+            - March 1, 2026 is a Sunday (dummy layout for static visual)
+            - Hackathon dates: 14–15 March
+            - Check-in: 14 March morning
+            - Check-out: 15 March afternoon
+          -->
+          <div class="calendar-grid">
+            <!-- Day headers -->
+            <div class="calendar-day-header">Sun</div>
+            <div class="calendar-day-header">Mon</div>
+            <div class="calendar-day-header">Tue</div>
+            <div class="calendar-day-header">Wed</div>
+            <div class="calendar-day-header">Thu</div>
+            <div class="calendar-day-header">Fri</div>
+            <div class="calendar-day-header">Sat</div>
+
+            <!-- Row 1 -->
+            <div class="calendar-cell"><span class="date">1</span></div>
+            <div class="calendar-cell"><span class="date">2</span></div>
+            <div class="calendar-cell"><span class="date">3</span></div>
+            <div class="calendar-cell"><span class="date">4</span></div>
+            <div class="calendar-cell"><span class="date">5</span></div>
+            <div class="calendar-cell"><span class="date">6</span></div>
+            <div class="calendar-cell"><span class="date">7</span></div>
+
+            <!-- Row 2 -->
+            <div class="calendar-cell"><span class="date">8</span></div>
+            <div class="calendar-cell"><span class="date">9</span></div>
+            <div class="calendar-cell"><span class="date">10</span></div>
+            <div class="calendar-cell"><span class="date">11</span></div>
+            <div class="calendar-cell"><span class="date">12</span></div>
+            <div class="calendar-cell"><span class="date">13</span></div>
+            <!-- 14: check-in + hack -->
+            <div class="calendar-cell hack checkin"><span class="date">14</span></div>
+
+            <!-- Row 3 -->
+            <!-- 15: hack + checkout -->
+            <div class="calendar-cell hack checkout"><span class="date">15</span></div>
+            <div class="calendar-cell"><span class="date">16</span></div>
+            <div class="calendar-cell"><span class="date">17</span></div>
+            <div class="calendar-cell"><span class="date">18</span></div>
+            <div class="calendar-cell"><span class="date">19</span></div>
+            <div class="calendar-cell"><span class="date">20</span></div>
+            <div class="calendar-cell"><span class="date">21</span></div>
+
+            <!-- Row 4 -->
+            <div class="calendar-cell"><span class="date">22</span></div>
+            <div class="calendar-cell"><span class="date">23</span></div>
+            <div class="calendar-cell"><span class="date">24</span></div>
+            <div class="calendar-cell"><span class="date">25</span></div>
+            <div class="calendar-cell"><span class="date">26</span></div>
+            <div class="calendar-cell"><span class="date">27</span></div>
+            <div class="calendar-cell"><span class="date">28</span></div>
+
+            <!-- Row 5 -->
+            <div class="calendar-cell"><span class="date">29</span></div>
+            <div class="calendar-cell"><span class="date">30</span></div>
+            <div class="calendar-cell"><span class="date">31</span></div>
+            <!-- trailing empty cells -->
+            <div class="calendar-cell empty"></div>
+            <div class="calendar-cell empty"></div>
+            <div class="calendar-cell empty"></div>
+            <div class="calendar-cell empty"></div>
+          </div>
+
+          <div class="calendar-footer-note">
+            The hackathon runs continuously from the morning of
+            <span>14 March 2026</span> until the afternoon of
+            <span>15 March 2026</span>. Accommodation covers this full window.
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="note-card">
+        <div class="note-title">Important Notes</div>
+        <ul style="margin: 6px 0 0 18px; padding: 0;">
+          <li>Accommodation is <strong>optional</strong> and must be selected in your registration form.</li>
+          <li>Please carry a valid college ID card and any government ID for verification at check-in.</li>
+          <li>Participants are responsible for their personal belongings; lockers are limited.</li>
+          <li>Any damage to hostel property will be chargeable to the respective team.</li>
+        </ul>
+      </div>
+    </main>
+
+    <footer>
+      © 2026 TechFest2K26 · Accommodation Desk · For queries, contact: stay@techfest2k26.com
+    </footer>
+  </div>
+
+  <script>
+    // Simple parallax effect for background layers
+    (function () {
+      const gridLayer = document.querySelector('.layer-grid');
+      const glowLayer = document.querySelector('.layer-glow');
+      const particlesLayer = document.querySelector('.layer-particles');
+
+      function onScroll() {
+        const y = window.scrollY || window.pageYOffset;
+        if (gridLayer) gridLayer.style.transform = `translateY(${y * 0.05}px)`;
+        if (glowLayer) glowLayer.style.transform = `translateY(${y * 0.08}px)`;
+        if (particlesLayer) particlesLayer.style.transform = `translateY(${y * 0.12}px)`;
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+  </script>
+</body>
+</html>
